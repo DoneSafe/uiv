@@ -40,7 +40,7 @@ export default {
   render() {
     const Tag = this.tag;
     return (
-      <Tag>
+      <Tag ref="tagContainer">
         {renderSlot(this.$slots.default)}
         <div
           style={{

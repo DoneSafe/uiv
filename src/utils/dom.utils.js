@@ -82,11 +82,11 @@ export function getScrollbarWidth(recalculate = false) {
 }
 
 export function on(element, event, handler) {
-  element.addEventListener(event, handler);
+  element?.addEventListener(event, handler);
 }
 
 export function off(element, event, handler) {
-  element.removeEventListener(event, handler);
+  element?.removeEventListener(event, handler);
 }
 
 export function isElement(el) {

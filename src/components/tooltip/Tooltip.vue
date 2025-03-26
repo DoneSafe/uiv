@@ -36,7 +36,7 @@ export default {
   render() {
     const Tag = this.tag;
     return (
-      <Tag>
+      <Tag ref="tagContainer">
         {renderSlot(this.$slots.default)}
         <div ref="popup" role="tooltip" onMouseleave={this.hideOnLeave}>
           <div class="tooltip-arrow" />

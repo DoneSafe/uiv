@@ -78,7 +78,7 @@ export default defineComponent({
       const trigger =
         element.value?.querySelector('[data-role="trigger"]') ||
         element.value?.querySelector('.dropdown-toggle') ||
-        element.value?.firstChild;
+        element.value?.firstElementChild;
       triggerEl.value = trigger && trigger !== dropdown.value ? trigger : null;
     }
 

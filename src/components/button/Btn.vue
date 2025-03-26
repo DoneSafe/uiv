@@ -33,7 +33,7 @@
     />
     <slot />
   </label>
-  <BtnGroup v-else-if="justified">
+  <btn-group v-else-if="justified">
     <button
       :class="classes"
       :type="nativeType"
@@ -42,7 +42,7 @@
     >
       <slot />
     </button>
-  </BtnGroup>
+  </btn-group>
   <button
     v-else
     :class="classes"
@@ -55,9 +55,11 @@
 </template>
 
 <script setup>
-import BtnGroup from './BtnGroup.vue';
 import { computed } from 'vue';
+
 import { linkProps } from '../../props/link.props';
+
+import BtnGroup from './BtnGroup.vue';
 
 const props = defineProps({
   ...linkProps,
@@ -80,7 +82,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'click']);
 
 const isInputActive = computed(() =>
   props.inputType === 'checkbox'
@@ -100,6 +102,8 @@ function onClick(e) {
   if (props.disabled && e instanceof Event) {
     e.preventDefault();
     e.stopPropagation();
+  } else {
+    emit('click', e);
   }
 }
 

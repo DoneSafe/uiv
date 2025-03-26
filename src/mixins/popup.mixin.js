@@ -132,12 +132,14 @@ export default {
         this.triggerEl = getElementBySelectorOrRef(target);
       } else {
         // find special element
-        const trigger = this.$el.querySelector('[data-role="trigger"]');
+        const trigger = this.$refs.tagContainer?.querySelector(
+          '[data-role="trigger"]'
+        );
         if (trigger) {
           this.triggerEl = trigger;
         } else {
           // use the first child
-          const firstChild = this.$el.querySelector('*');
+          const firstChild = this.$refs.tagContainer?.querySelector('*');
           this.triggerEl = firstChild === this.$refs.popup ? null : firstChild;
         }
       }
