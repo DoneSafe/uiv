@@ -132,9 +132,7 @@ export default {
         this.triggerEl = getElementBySelectorOrRef(target);
       } else {
         // find special element
-        const trigger = this.$refs.tagContainer?.querySelector(
-          '[data-role="trigger"]'
-        );
+        const trigger = this.$refs.tagContainer?.querySelector('[data-role="trigger"]');
         if (trigger) {
           this.triggerEl = trigger;
         } else {
@@ -157,10 +155,7 @@ export default {
           on(this.triggerEl, EVENTS.MOUSE_LEAVE, this.handleAuto);
           on(this.triggerEl, EVENTS.FOCUS, this.handleAuto);
           on(this.triggerEl, EVENTS.BLUR, this.handleAuto);
-        } else if (
-          this.trigger === TRIGGERS.CLICK ||
-          this.trigger === TRIGGERS.OUTSIDE_CLICK
-        ) {
+        } else if (this.trigger === TRIGGERS.CLICK || this.trigger === TRIGGERS.OUTSIDE_CLICK) {
           on(this.triggerEl, EVENTS.CLICK, this.toggle);
         }
       }
@@ -203,24 +198,12 @@ export default {
       const popup = this.$refs.popup;
       /* istanbul ignore else */
       if (popup) {
-        setTooltipPosition(
-          popup,
-          this.triggerEl,
-          this.placement,
-          this.autoPlacement,
-          this.appendTo,
-          this.positionBy,
-          this.viewport
-        );
+        setTooltipPosition(popup, this.triggerEl, this.placement, this.autoPlacement, this.appendTo, this.positionBy, this.viewport);
         popup.offsetHeight;
       }
     },
     hideOnLeave() {
-      if (
-        this.trigger === TRIGGERS.HOVER ||
-        (this.trigger === TRIGGERS.HOVER_FOCUS &&
-          !this.triggerEl.matches(':focus'))
-      ) {
+      if (this.trigger === TRIGGERS.HOVER || (this.trigger === TRIGGERS.HOVER_FOCUS && !this.triggerEl.matches(':focus'))) {
         this.$hide();
       }
     },
@@ -232,12 +215,7 @@ export default {
       }
     },
     show() {
-      if (
-        this.enable &&
-        this.triggerEl &&
-        this.isNotEmpty() &&
-        !this.isShown()
-      ) {
+      if (this.enable && this.triggerEl && this.isNotEmpty() && !this.isShown()) {
         const popUpAppendedContainer = this.hideTimeoutId > 0; // weird condition
         if (popUpAppendedContainer) {
           clearTimeout(this.hideTimeoutId);
@@ -260,9 +238,7 @@ export default {
             }
             // add to dom
             if (!popUpAppendedContainer) {
-              popup.className = `${this.name} ${this.placement} ${
-                this.customClass ? this.customClass : ''
-              } fade`;
+              popup.className = `${this.name} ${this.placement} ${this.customClass ? this.customClass : ''} fade`;
               const container = getElementBySelectorOrRef(this.appendTo);
               container.appendChild(popup);
               this.resetPosition();
@@ -283,11 +259,7 @@ export default {
       if (!this.isShown()) {
         return;
       }
-      if (
-        this.enterable &&
-        (this.trigger === TRIGGERS.HOVER ||
-          this.trigger === TRIGGERS.HOVER_FOCUS)
-      ) {
+      if (this.enterable && (this.trigger === TRIGGERS.HOVER || this.trigger === TRIGGERS.HOVER_FOCUS)) {
         clearTimeout(this.hideTimeoutId);
         this.hideTimeoutId = setTimeout(() => {
           this.hideTimeoutId = 0;

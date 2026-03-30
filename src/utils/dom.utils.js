@@ -64,11 +64,7 @@ export function getScrollbarWidth(recalculate = false) {
   }
   const div1 = document.createElement('div');
   const div2 = document.createElement('div');
-  div1.style.width =
-    div2.style.width =
-    div1.style.height =
-    div2.style.height =
-      '100px';
+  div1.style.width = div2.style.width = div1.style.height = div2.style.height = '100px';
   div1.style.overflow = 'scroll';
   div2.style.overflow = 'hidden';
   document.body.appendChild(div1);
@@ -82,10 +78,12 @@ export function getScrollbarWidth(recalculate = false) {
 }
 
 export function on(element, event, handler) {
+  // TODO: element might be wrong here in some cases, need to check
   element?.addEventListener(event, handler);
 }
 
 export function off(element, event, handler) {
+  // TODO: element might be wrong here in some cases, need to check
   element?.removeEventListener(event, handler);
 }
 
@@ -94,7 +92,14 @@ export function isElement(el) {
 }
 
 export function removeFromDom(el) {
-  isElement(el) && isElement(el.parentNode) && el.parentNode.removeChild(el);
+  if (!isElement(el)) {
+    return;
+  }
+  if (typeof el.remove === 'function') {
+    el.remove();
+    return;
+  }
+  isElement(el.parentNode) && el.parentNode.removeChild(el);
 }
 
 export function addClass(el, className) {
@@ -120,24 +125,20 @@ export function hasClass(el, className) {
 
 export function setDropdownPosition(dropdown, trigger, options = {}) {
   const doc = document.documentElement;
-  const containerScrollLeft =
-    (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
-  const containerScrollTop =
-    (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+  const containerScrollLeft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+  const containerScrollTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
   const rect = trigger.getBoundingClientRect();
   const dropdownRect = dropdown.getBoundingClientRect();
   dropdown.style.right = 'auto';
   dropdown.style.bottom = 'auto';
   if (options.menuRight) {
-    const left =
-      containerScrollLeft + rect.left + rect.width - dropdownRect.width;
+    const left = containerScrollLeft + rect.left + rect.width - dropdownRect.width;
     dropdown.style.left = left < 0 ? 0 : left + 'px';
   } else {
     dropdown.style.left = containerScrollLeft + rect.left + 'px';
   }
   if (options.dropup) {
-    dropdown.style.top =
-      containerScrollTop + rect.top - dropdownRect.height - 4 + 'px';
+    dropdown.style.top = containerScrollTop + rect.top - dropdownRect.height - 4 + 'px';
   } else {
     dropdown.style.top = containerScrollTop + rect.top + rect.height + 'px';
   }
@@ -155,57 +156,38 @@ export function isAvailableAtPosition(trigger, popup, placement) {
     case PLACEMENTS.TOP:
       top = triggerRect.top >= popupRect.height;
       left = triggerRect.left + triggerRect.width / 2 >= popupRect.width / 2;
-      right =
-        triggerRect.right - triggerRect.width / 2 + popupRect.width / 2 <=
-        viewPortSize.width;
+      right = triggerRect.right - triggerRect.width / 2 + popupRect.width / 2 <= viewPortSize.width;
       break;
     case PLACEMENTS.BOTTOM:
       bottom = triggerRect.bottom + popupRect.height <= viewPortSize.height;
       left = triggerRect.left + triggerRect.width / 2 >= popupRect.width / 2;
-      right =
-        triggerRect.right - triggerRect.width / 2 + popupRect.width / 2 <=
-        viewPortSize.width;
+      right = triggerRect.right - triggerRect.width / 2 + popupRect.width / 2 <= viewPortSize.width;
       break;
     case PLACEMENTS.RIGHT:
       right = triggerRect.right + popupRect.width <= viewPortSize.width;
       top = triggerRect.top + triggerRect.height / 2 >= popupRect.height / 2;
-      bottom =
-        triggerRect.bottom - triggerRect.height / 2 + popupRect.height / 2 <=
-        viewPortSize.height;
+      bottom = triggerRect.bottom - triggerRect.height / 2 + popupRect.height / 2 <= viewPortSize.height;
       break;
     case PLACEMENTS.LEFT:
       left = triggerRect.left >= popupRect.width;
       top = triggerRect.top + triggerRect.height / 2 >= popupRect.height / 2;
-      bottom =
-        triggerRect.bottom - triggerRect.height / 2 + popupRect.height / 2 <=
-        viewPortSize.height;
+      bottom = triggerRect.bottom - triggerRect.height / 2 + popupRect.height / 2 <= viewPortSize.height;
       break;
   }
   return top && right && bottom && left;
 }
 
-export function setTooltipPosition(
-  tooltip,
-  trigger,
-  placement,
-  auto,
-  appendTo,
-  positionBy,
-  viewport
-) {
+export function setTooltipPosition(tooltip, trigger, placement, auto, appendTo, positionBy, viewport) {
   if (!isElement(tooltip) || !isElement(trigger)) {
     return;
   }
-  const isPopover =
-    tooltip && tooltip.className && tooltip.className.indexOf('popover') >= 0;
+  const isPopover = tooltip && tooltip.className && tooltip.className.indexOf('popover') >= 0;
   let containerScrollTop;
   let containerScrollLeft;
   if (!isExist(appendTo) || appendTo === 'body' || positionBy === 'body') {
     const doc = document.documentElement;
-    containerScrollLeft =
-      (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
-    containerScrollTop =
-      (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+    containerScrollLeft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+    containerScrollTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
   } else {
     const container = getElementBySelectorOrRef(positionBy || appendTo);
     containerScrollLeft = container.scrollLeft;
@@ -215,12 +197,7 @@ export function setTooltipPosition(
   if (auto) {
     // Try: right -> bottom -> left -> top
     // Cause the default placement is top
-    const placements = [
-      PLACEMENTS.RIGHT,
-      PLACEMENTS.BOTTOM,
-      PLACEMENTS.LEFT,
-      PLACEMENTS.TOP,
-    ];
+    const placements = [PLACEMENTS.RIGHT, PLACEMENTS.BOTTOM, PLACEMENTS.LEFT, PLACEMENTS.TOP];
     // The class switch helper function
     const changePlacementClass = (placement) => {
       // console.log(placement)
@@ -250,22 +227,18 @@ export function setTooltipPosition(
   let left;
   if (placement === PLACEMENTS.BOTTOM) {
     top = containerScrollTop + rect.top + rect.height;
-    left =
-      containerScrollLeft + rect.left + rect.width / 2 - tooltipRect.width / 2;
+    left = containerScrollLeft + rect.left + rect.width / 2 - tooltipRect.width / 2;
   } else if (placement === PLACEMENTS.LEFT) {
-    top =
-      containerScrollTop + rect.top + rect.height / 2 - tooltipRect.height / 2;
+    top = containerScrollTop + rect.top + rect.height / 2 - tooltipRect.height / 2;
     left = containerScrollLeft + rect.left - tooltipRect.width;
   } else if (placement === PLACEMENTS.RIGHT) {
-    top =
-      containerScrollTop + rect.top + rect.height / 2 - tooltipRect.height / 2;
+    top = containerScrollTop + rect.top + rect.height / 2 - tooltipRect.height / 2;
     // https://github.com/uiv-lib/uiv/issues/272
     // add 1px to fix above issue
     left = containerScrollLeft + rect.left + rect.width + 1;
   } else {
     top = containerScrollTop + rect.top - tooltipRect.height;
-    left =
-      containerScrollLeft + rect.left + rect.width / 2 - tooltipRect.width / 2;
+    left = containerScrollLeft + rect.left + rect.width / 2 - tooltipRect.width / 2;
   }
   let viewportEl;
   // viewport option
@@ -327,8 +300,7 @@ export function toggleBodyOverflow(enable) {
       node.style.paddingRight = null;
     });
   } else {
-    const documentHasScrollbar =
-      hasScrollbar(document.documentElement) || hasScrollbar(document.body);
+    const documentHasScrollbar = hasScrollbar(document.documentElement) || hasScrollbar(document.body);
     if (documentHasScrollbar) {
       const scrollbarWidth = getScrollbarWidth();
       body.style.paddingRight = `${scrollbarWidth}px`;

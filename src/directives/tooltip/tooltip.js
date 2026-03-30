@@ -1,4 +1,5 @@
 import { h, render } from 'vue';
+
 import Tooltip from '../../components/tooltip/Tooltip.vue';
 import { hasOwnProperty } from '../../utils/object.utils';
 import { removeFromDom } from '../../utils/dom.utils';
@@ -32,18 +33,9 @@ const mounted = (el, binding) => {
       typeof binding.value === 'string'
         ? binding.value && binding.value.toString()
         : binding.value && binding.value.text && binding.value.text.toString(),
-    positionBy:
-      binding.value &&
-      binding.value.positionBy &&
-      binding.value.positionBy.toString(),
-    viewport:
-      binding.value &&
-      binding.value.viewport &&
-      binding.value.viewport.toString(),
-    customClass:
-      binding.value &&
-      binding.value.customClass &&
-      binding.value.customClass.toString(),
+    positionBy: binding.value && binding.value.positionBy && binding.value.positionBy.toString(),
+    viewport: binding.value && binding.value.viewport && binding.value.viewport.toString(),
+    customClass: binding.value && binding.value.customClass && binding.value.customClass.toString(),
     showDelay: binding.value && binding.value.showDelay,
     hideDelay: binding.value && binding.value.hideDelay,
     enterable,
