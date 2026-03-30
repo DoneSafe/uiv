@@ -1,4 +1,4 @@
-import { createVNode as v, h as H, render as A } from "vue";
+import { createVNode as y, h as H, render as A } from "vue";
 function D(t) {
   return typeof t < "u" && t !== null;
 }
@@ -11,7 +11,7 @@ function V(t) {
 function K(t, e) {
   return Object.prototype.hasOwnProperty.call(t, e);
 }
-const r = {
+const h = {
   MOUSE_ENTER: "mouseenter",
   MOUSE_LEAVE: "mouseleave",
   MOUSE_DOWN: "mousedown",
@@ -54,7 +54,13 @@ function O(t) {
   return t && t.nodeType === Node.ELEMENT_NODE;
 }
 function L(t) {
-  O(t) && O(t.parentNode) && t.parentNode.removeChild(t);
+  if (O(t)) {
+    if (typeof t.remove == "function") {
+      t.remove();
+      return;
+    }
+    O(t.parentNode) && t.parentNode.removeChild(t);
+  }
 }
 function P(t, e) {
   O(t) && t.classList.add(e);
@@ -67,42 +73,37 @@ function z(t, e) {
 }
 function B(t, e, s) {
   const i = t.getBoundingClientRect(), o = e.getBoundingClientRect(), a = G();
-  let d = !0, S = !0, h = !0, c = !0;
+  let d = !0, S = !0, r = !0, c = !0;
   switch (s) {
     case l.TOP:
       d = i.top >= o.height, c = i.left + i.width / 2 >= o.width / 2, S = i.right - i.width / 2 + o.width / 2 <= a.width;
       break;
     case l.BOTTOM:
-      h = i.bottom + o.height <= a.height, c = i.left + i.width / 2 >= o.width / 2, S = i.right - i.width / 2 + o.width / 2 <= a.width;
+      r = i.bottom + o.height <= a.height, c = i.left + i.width / 2 >= o.width / 2, S = i.right - i.width / 2 + o.width / 2 <= a.width;
       break;
     case l.RIGHT:
-      S = i.right + o.width <= a.width, d = i.top + i.height / 2 >= o.height / 2, h = i.bottom - i.height / 2 + o.height / 2 <= a.height;
+      S = i.right + o.width <= a.width, d = i.top + i.height / 2 >= o.height / 2, r = i.bottom - i.height / 2 + o.height / 2 <= a.height;
       break;
     case l.LEFT:
-      c = i.left >= o.width, d = i.top + i.height / 2 >= o.height / 2, h = i.bottom - i.height / 2 + o.height / 2 <= a.height;
+      c = i.left >= o.width, d = i.top + i.height / 2 >= o.height / 2, r = i.bottom - i.height / 2 + o.height / 2 <= a.height;
       break;
   }
-  return d && S && h && c;
+  return d && S && r && c;
 }
 function W(t, e, s, i, o, a, d) {
   if (!O(t) || !O(e))
     return;
   const S = t && t.className && t.className.indexOf("popover") >= 0;
-  let h, c;
+  let r, c;
   if (!D(o) || o === "body" || a === "body") {
     const n = document.documentElement;
-    c = (window.pageXOffset || n.scrollLeft) - (n.clientLeft || 0), h = (window.pageYOffset || n.scrollTop) - (n.clientTop || 0);
+    c = (window.pageXOffset || n.scrollLeft) - (n.clientLeft || 0), r = (window.pageYOffset || n.scrollTop) - (n.clientTop || 0);
   } else {
     const n = U(a || o);
-    c = n.scrollLeft, h = n.scrollTop;
+    c = n.scrollLeft, r = n.scrollTop;
   }
   if (i) {
-    const n = [
-      l.RIGHT,
-      l.BOTTOM,
-      l.LEFT,
-      l.TOP
-    ], C = (p) => {
+    const n = [l.RIGHT, l.BOTTOM, l.LEFT, l.TOP], C = (p) => {
       n.forEach((I) => {
         F(t, I);
       }), P(t, p);
@@ -118,10 +119,10 @@ function W(t, e, s, i, o, a, d) {
   }
   const u = e.getBoundingClientRect(), T = t.getBoundingClientRect();
   let f, g;
-  s === l.BOTTOM ? (f = h + u.top + u.height, g = c + u.left + u.width / 2 - T.width / 2) : s === l.LEFT ? (f = h + u.top + u.height / 2 - T.height / 2, g = c + u.left - T.width) : s === l.RIGHT ? (f = h + u.top + u.height / 2 - T.height / 2, g = c + u.left + u.width + 1) : (f = h + u.top - T.height, g = c + u.left + u.width / 2 - T.width / 2);
-  let y;
-  if (V(d) ? y = document.querySelector(d) : M(d) && (y = d(e)), O(y)) {
-    const n = S ? 11 : 0, C = y.getBoundingClientRect(), p = h + C.top, I = c + C.left, $ = p + C.height, N = I + C.width;
+  s === l.BOTTOM ? (f = r + u.top + u.height, g = c + u.left + u.width / 2 - T.width / 2) : s === l.LEFT ? (f = r + u.top + u.height / 2 - T.height / 2, g = c + u.left - T.width) : s === l.RIGHT ? (f = r + u.top + u.height / 2 - T.height / 2, g = c + u.left + u.width + 1) : (f = r + u.top - T.height, g = c + u.left + u.width / 2 - T.width / 2);
+  let v;
+  if (V(d) ? v = document.querySelector(d) : M(d) && (v = d(e)), O(v)) {
+    const n = S ? 11 : 0, C = v.getBoundingClientRect(), p = r + C.top, I = c + C.left, $ = p + C.height, N = I + C.width;
     f < p ? f = p : f + T.height > $ && (f = $ - T.height), g < I ? g = I : g + T.width > N && (g = N - T.width), s === l.BOTTOM ? f -= n : s === l.LEFT ? g += n : s === l.RIGHT ? g -= n : f += n;
   }
   t.style.top = `${f}px`, t.style.left = `${g}px`;
@@ -228,9 +229,7 @@ const R = "in", X = {
       if (t)
         this.triggerEl = U(t);
       else {
-        const i = (e = this.$refs.tagContainer) == null ? void 0 : e.querySelector(
-          '[data-role="trigger"]'
-        );
+        const i = (e = this.$refs.tagContainer) == null ? void 0 : e.querySelector('[data-role="trigger"]');
         if (i)
           this.triggerEl = i;
         else {
@@ -240,25 +239,17 @@ const R = "in", X = {
       }
     },
     initListeners() {
-      this.triggerEl && (this.trigger === m.HOVER ? (E(this.triggerEl, r.MOUSE_ENTER, this.show), E(this.triggerEl, r.MOUSE_LEAVE, this.hide)) : this.trigger === m.FOCUS ? (E(this.triggerEl, r.FOCUS, this.show), E(this.triggerEl, r.BLUR, this.hide)) : this.trigger === m.HOVER_FOCUS ? (E(this.triggerEl, r.MOUSE_ENTER, this.handleAuto), E(this.triggerEl, r.MOUSE_LEAVE, this.handleAuto), E(this.triggerEl, r.FOCUS, this.handleAuto), E(this.triggerEl, r.BLUR, this.handleAuto)) : (this.trigger === m.CLICK || this.trigger === m.OUTSIDE_CLICK) && E(this.triggerEl, r.CLICK, this.toggle)), E(window, r.CLICK, this.windowClicked);
+      this.triggerEl && (this.trigger === m.HOVER ? (E(this.triggerEl, h.MOUSE_ENTER, this.show), E(this.triggerEl, h.MOUSE_LEAVE, this.hide)) : this.trigger === m.FOCUS ? (E(this.triggerEl, h.FOCUS, this.show), E(this.triggerEl, h.BLUR, this.hide)) : this.trigger === m.HOVER_FOCUS ? (E(this.triggerEl, h.MOUSE_ENTER, this.handleAuto), E(this.triggerEl, h.MOUSE_LEAVE, this.handleAuto), E(this.triggerEl, h.FOCUS, this.handleAuto), E(this.triggerEl, h.BLUR, this.handleAuto)) : (this.trigger === m.CLICK || this.trigger === m.OUTSIDE_CLICK) && E(this.triggerEl, h.CLICK, this.toggle)), E(window, h.CLICK, this.windowClicked);
     },
     clearListeners() {
-      this.triggerEl && (w(this.triggerEl, r.FOCUS, this.show), w(this.triggerEl, r.BLUR, this.hide), w(this.triggerEl, r.MOUSE_ENTER, this.show), w(this.triggerEl, r.MOUSE_LEAVE, this.hide), w(this.triggerEl, r.CLICK, this.toggle), w(this.triggerEl, r.MOUSE_ENTER, this.handleAuto), w(this.triggerEl, r.MOUSE_LEAVE, this.handleAuto), w(this.triggerEl, r.FOCUS, this.handleAuto), w(this.triggerEl, r.BLUR, this.handleAuto)), w(window, r.CLICK, this.windowClicked), this.clearTimeouts();
+      this.triggerEl && (w(this.triggerEl, h.FOCUS, this.show), w(this.triggerEl, h.BLUR, this.hide), w(this.triggerEl, h.MOUSE_ENTER, this.show), w(this.triggerEl, h.MOUSE_LEAVE, this.hide), w(this.triggerEl, h.CLICK, this.toggle), w(this.triggerEl, h.MOUSE_ENTER, this.handleAuto), w(this.triggerEl, h.MOUSE_LEAVE, this.handleAuto), w(this.triggerEl, h.FOCUS, this.handleAuto), w(this.triggerEl, h.BLUR, this.handleAuto)), w(window, h.CLICK, this.windowClicked), this.clearTimeouts();
     },
     clearTimeouts() {
       this.hideTimeoutId && (clearTimeout(this.hideTimeoutId), this.hideTimeoutId = 0), this.showTimeoutId && (clearTimeout(this.showTimeoutId), this.showTimeoutId = 0), this.transitionTimeoutId && (clearTimeout(this.transitionTimeoutId), this.transitionTimeoutId = 0), this.autoTimeoutId && (clearTimeout(this.autoTimeoutId), this.autoTimeoutId = 0);
     },
     resetPosition() {
       const t = this.$refs.popup;
-      t && (W(
-        t,
-        this.triggerEl,
-        this.placement,
-        this.autoPlacement,
-        this.appendTo,
-        this.positionBy,
-        this.viewport
-      ), t.offsetHeight);
+      t && (W(t, this.triggerEl, this.placement, this.autoPlacement, this.appendTo, this.positionBy, this.viewport), t.offsetHeight);
     },
     hideOnLeave() {
       (this.trigger === m.HOVER || this.trigger === m.HOVER_FOCUS && !this.triggerEl.matches(":focus")) && this.$hide();
@@ -345,16 +336,16 @@ const q = {
   },
   render() {
     const t = this.tag;
-    return v(t, {
+    return y(t, {
       ref: "tagContainer"
     }, {
-      default: () => [j(this.$slots.default), v("div", {
+      default: () => [j(this.$slots.default), y("div", {
         ref: "popup",
         role: "tooltip",
         onMouseleave: this.hideOnLeave
-      }, [v("div", {
+      }, [y("div", {
         class: "tooltip-arrow"
-      }, null), v("div", {
+      }, null), y("div", {
         class: "tooltip-inner"
       }, [this.text])])]
     });
@@ -362,11 +353,11 @@ const q = {
 }, _ = "_uiv_tooltip_instance", k = (t, e) => {
   x(t);
   const s = [];
-  for (const h in e.modifiers)
-    K(e.modifiers, h) && e.modifiers[h] && s.push(h);
+  for (const r in e.modifiers)
+    K(e.modifiers, r) && e.modifiers[r] && s.push(r);
   let i, o, a;
-  s.forEach((h) => {
-    /(top)|(left)|(right)|(bottom)/.test(h) ? i = h : /(hover)|(focus)|(click)/.test(h) ? o = h : /unenterable/.test(h) && (a = !1);
+  s.forEach((r) => {
+    /(top)|(left)|(right)|(bottom)/.test(r) ? i = r : /(hover)|(focus)|(click)/.test(r) ? o = r : /unenterable/.test(r) && (a = !1);
   });
   const d = H(q, {
     target: t,

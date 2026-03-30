@@ -24,7 +24,7 @@ const h = {
   SCROLL: "scroll",
   TOUCH_START: "touchstart",
   TOUCH_END: "touchend"
-}, f = {
+}, c = {
   CLICK: "click",
   HOVER: "hover",
   FOCUS: "focus",
@@ -41,17 +41,23 @@ function F() {
   const t = window.innerWidth || 0, i = window.innerHeight || 0;
   return { width: t, height: i };
 }
-function T(t, i, s) {
+function m(t, i, s) {
   t == null || t.addEventListener(i, s);
 }
-function m(t, i, s) {
+function T(t, i, s) {
   t == null || t.removeEventListener(i, s);
 }
 function E(t) {
   return t && t.nodeType === Node.ELEMENT_NODE;
 }
 function R(t) {
-  E(t) && E(t.parentNode) && t.parentNode.removeChild(t);
+  if (E(t)) {
+    if (typeof t.remove == "function") {
+      t.remove();
+      return;
+    }
+    E(t.parentNode) && t.parentNode.removeChild(t);
+  }
 }
 function A(t, i) {
   E(t) && t.classList.add(i);
@@ -94,20 +100,15 @@ function H(t, i, s, e, o, w, O) {
     d = r.scrollLeft, u = r.scrollTop;
   }
   if (e) {
-    const r = [
-      n.RIGHT,
-      n.BOTTOM,
-      n.LEFT,
-      n.TOP
-    ], C = (c) => {
+    const r = [n.RIGHT, n.BOTTOM, n.LEFT, n.TOP], C = (f) => {
       r.forEach((S) => {
         b(t, S);
-      }), A(t, c);
+      }), A(t, f);
     };
     if (!N(i, t, s)) {
-      for (let c = 0, S = r.length; c < S; c++)
-        if (C(r[c]), N(i, t, r[c])) {
-          s = r[c];
+      for (let f = 0, S = r.length; f < S; f++)
+        if (C(r[f]), N(i, t, r[f])) {
+          s = r[f];
           break;
         }
       C(s);
@@ -118,8 +119,8 @@ function H(t, i, s, e, o, w, O) {
   s === n.BOTTOM ? (a = u + l.top + l.height, g = d + l.left + l.width / 2 - p.width / 2) : s === n.LEFT ? (a = u + l.top + l.height / 2 - p.height / 2, g = d + l.left - p.width) : s === n.RIGHT ? (a = u + l.top + l.height / 2 - p.height / 2, g = d + l.left + l.width + 1) : (a = u + l.top - p.height, g = d + l.left + l.width / 2 - p.width / 2);
   let L;
   if (M(O) ? L = document.querySelector(O) : B(O) && (L = O(i)), E(L)) {
-    const r = I ? 11 : 0, C = L.getBoundingClientRect(), c = u + C.top, S = d + C.left, _ = c + C.height, v = S + C.width;
-    a < c ? a = c : a + p.height > _ && (a = _ - p.height), g < S ? g = S : g + p.width > v && (g = v - p.width), s === n.BOTTOM ? a -= r : s === n.LEFT ? g += r : s === n.RIGHT ? g -= r : a += r;
+    const r = I ? 11 : 0, C = L.getBoundingClientRect(), f = u + C.top, S = d + C.left, v = f + C.height, _ = S + C.width;
+    a < f ? a = f : a + p.height > v && (a = v - p.height), g < S ? g = S : g + p.width > _ && (g = _ - p.width), s === n.BOTTOM ? a -= r : s === n.LEFT ? g += r : s === n.RIGHT ? g -= r : a += r;
   }
   t.style.top = `${a}px`, t.style.left = `${g}px`;
 }
@@ -225,9 +226,7 @@ const U = "in", K = {
       if (t)
         this.triggerEl = $(t);
       else {
-        const e = (i = this.$refs.tagContainer) == null ? void 0 : i.querySelector(
-          '[data-role="trigger"]'
-        );
+        const e = (i = this.$refs.tagContainer) == null ? void 0 : i.querySelector('[data-role="trigger"]');
         if (e)
           this.triggerEl = e;
         else {
@@ -237,28 +236,20 @@ const U = "in", K = {
       }
     },
     initListeners() {
-      this.triggerEl && (this.trigger === f.HOVER ? (T(this.triggerEl, h.MOUSE_ENTER, this.show), T(this.triggerEl, h.MOUSE_LEAVE, this.hide)) : this.trigger === f.FOCUS ? (T(this.triggerEl, h.FOCUS, this.show), T(this.triggerEl, h.BLUR, this.hide)) : this.trigger === f.HOVER_FOCUS ? (T(this.triggerEl, h.MOUSE_ENTER, this.handleAuto), T(this.triggerEl, h.MOUSE_LEAVE, this.handleAuto), T(this.triggerEl, h.FOCUS, this.handleAuto), T(this.triggerEl, h.BLUR, this.handleAuto)) : (this.trigger === f.CLICK || this.trigger === f.OUTSIDE_CLICK) && T(this.triggerEl, h.CLICK, this.toggle)), T(window, h.CLICK, this.windowClicked);
+      this.triggerEl && (this.trigger === c.HOVER ? (m(this.triggerEl, h.MOUSE_ENTER, this.show), m(this.triggerEl, h.MOUSE_LEAVE, this.hide)) : this.trigger === c.FOCUS ? (m(this.triggerEl, h.FOCUS, this.show), m(this.triggerEl, h.BLUR, this.hide)) : this.trigger === c.HOVER_FOCUS ? (m(this.triggerEl, h.MOUSE_ENTER, this.handleAuto), m(this.triggerEl, h.MOUSE_LEAVE, this.handleAuto), m(this.triggerEl, h.FOCUS, this.handleAuto), m(this.triggerEl, h.BLUR, this.handleAuto)) : (this.trigger === c.CLICK || this.trigger === c.OUTSIDE_CLICK) && m(this.triggerEl, h.CLICK, this.toggle)), m(window, h.CLICK, this.windowClicked);
     },
     clearListeners() {
-      this.triggerEl && (m(this.triggerEl, h.FOCUS, this.show), m(this.triggerEl, h.BLUR, this.hide), m(this.triggerEl, h.MOUSE_ENTER, this.show), m(this.triggerEl, h.MOUSE_LEAVE, this.hide), m(this.triggerEl, h.CLICK, this.toggle), m(this.triggerEl, h.MOUSE_ENTER, this.handleAuto), m(this.triggerEl, h.MOUSE_LEAVE, this.handleAuto), m(this.triggerEl, h.FOCUS, this.handleAuto), m(this.triggerEl, h.BLUR, this.handleAuto)), m(window, h.CLICK, this.windowClicked), this.clearTimeouts();
+      this.triggerEl && (T(this.triggerEl, h.FOCUS, this.show), T(this.triggerEl, h.BLUR, this.hide), T(this.triggerEl, h.MOUSE_ENTER, this.show), T(this.triggerEl, h.MOUSE_LEAVE, this.hide), T(this.triggerEl, h.CLICK, this.toggle), T(this.triggerEl, h.MOUSE_ENTER, this.handleAuto), T(this.triggerEl, h.MOUSE_LEAVE, this.handleAuto), T(this.triggerEl, h.FOCUS, this.handleAuto), T(this.triggerEl, h.BLUR, this.handleAuto)), T(window, h.CLICK, this.windowClicked), this.clearTimeouts();
     },
     clearTimeouts() {
       this.hideTimeoutId && (clearTimeout(this.hideTimeoutId), this.hideTimeoutId = 0), this.showTimeoutId && (clearTimeout(this.showTimeoutId), this.showTimeoutId = 0), this.transitionTimeoutId && (clearTimeout(this.transitionTimeoutId), this.transitionTimeoutId = 0), this.autoTimeoutId && (clearTimeout(this.autoTimeoutId), this.autoTimeoutId = 0);
     },
     resetPosition() {
       const t = this.$refs.popup;
-      t && (H(
-        t,
-        this.triggerEl,
-        this.placement,
-        this.autoPlacement,
-        this.appendTo,
-        this.positionBy,
-        this.viewport
-      ), t.offsetHeight);
+      t && (H(t, this.triggerEl, this.placement, this.autoPlacement, this.appendTo, this.positionBy, this.viewport), t.offsetHeight);
     },
     hideOnLeave() {
-      (this.trigger === f.HOVER || this.trigger === f.HOVER_FOCUS && !this.triggerEl.matches(":focus")) && this.$hide();
+      (this.trigger === c.HOVER || this.trigger === c.HOVER_FOCUS && !this.triggerEl.matches(":focus")) && this.$hide();
     },
     toggle() {
       this.isShown() ? this.hide() : this.show();
@@ -281,7 +272,7 @@ const U = "in", K = {
       }
     },
     hide() {
-      this.showTimeoutId > 0 && (clearTimeout(this.showTimeoutId), this.showTimeoutId = 0), this.isShown() && (this.enterable && (this.trigger === f.HOVER || this.trigger === f.HOVER_FOCUS) ? (clearTimeout(this.hideTimeoutId), this.hideTimeoutId = setTimeout(() => {
+      this.showTimeoutId > 0 && (clearTimeout(this.showTimeoutId), this.showTimeoutId = 0), this.isShown() && (this.enterable && (this.trigger === c.HOVER || this.trigger === c.HOVER_FOCUS) ? (clearTimeout(this.hideTimeoutId), this.hideTimeoutId = setTimeout(() => {
         this.hideTimeoutId = 0;
         const t = this.$refs.popup;
         t && !t.matches(":hover") && this.$hide();
@@ -298,7 +289,7 @@ const U = "in", K = {
       return P(this.$refs.popup, U);
     },
     windowClicked(t) {
-      this.triggerEl && B(this.triggerEl.contains) && !this.triggerEl.contains(t.target) && this.trigger === f.OUTSIDE_CLICK && !(this.$refs.popup && this.$refs.popup.contains(t.target)) && this.isShown() && this.hide();
+      this.triggerEl && B(this.triggerEl.contains) && !this.triggerEl.contains(t.target) && this.trigger === c.OUTSIDE_CLICK && !(this.$refs.popup && this.$refs.popup.contains(t.target)) && this.isShown() && this.hide();
     },
     handleAuto() {
       clearTimeout(this.autoTimeoutId), this.autoTimeoutId = setTimeout(() => {
@@ -319,7 +310,7 @@ const W = {
     },
     trigger: {
       type: String,
-      default: f.HOVER_FOCUS
+      default: c.HOVER_FOCUS
     }
   },
   data() {

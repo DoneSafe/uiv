@@ -57,152 +57,17 @@ const F = function(e, o) {
       return t;
   } catch {
   }
-  const l = e.split(".");
-  let a = o.$$locale || H;
-  for (let n = 0, i = l.length; n < i; n++) {
-    const s = l[n];
-    if (t = a[s], n === i - 1)
+  const n = e.split(".");
+  let i = o.$$locale || H;
+  for (let l = 0, a = n.length; l < a; l++) {
+    const s = n[l];
+    if (t = i[s], l === a - 1)
       return t;
     if (!t)
       return "";
-    a = t;
+    i = t;
   }
   return "";
-}, W = {
-  // <a> props
-  href: { type: String, default: void 0 },
-  target: { type: String, default: void 0 },
-  // <router-link> props
-  to: { type: null, default: void 0 },
-  replace: { type: Boolean, default: !1 },
-  append: { type: Boolean, default: !1 },
-  exact: { type: Boolean, default: !1 }
-}, Y = {
-  __name: "BtnGroup",
-  props: {
-    size: { type: String, default: void 0 },
-    vertical: { type: Boolean, default: !1 },
-    justified: { type: Boolean, default: !1 }
-  },
-  setup(e) {
-    return (o, t) => (u(), f("div", {
-      class: c({
-        "btn-group": !e.vertical,
-        "btn-group-vertical": e.vertical,
-        "btn-group-justified": e.justified,
-        [`btn-group-${e.size}`]: e.size
-      }),
-      role: "group",
-      "data-toggle": "buttons"
-    }, [
-      r(o.$slots, "default")
-    ], 2));
-  }
-}, j = ["href", "target"], q = ["type", "checked", "disabled"], Z = ["type", "disabled"], J = ["type", "disabled"], G = {
-  __name: "Btn",
-  props: {
-    ...W,
-    justified: { type: Boolean, default: !1 },
-    type: { type: String, default: "default" },
-    nativeType: { type: String, default: "button" },
-    size: { type: String, default: void 0 },
-    block: { type: Boolean, default: !1 },
-    active: { type: Boolean, default: !1 },
-    disabled: { type: Boolean, default: !1 },
-    // <input> props
-    modelValue: { type: null, default: null },
-    inputValue: { type: null, default: null },
-    inputType: {
-      type: String,
-      validator(e) {
-        return e === "checkbox" || e === "radio";
-      },
-      default: void 0
-    }
-  },
-  emits: ["update:modelValue", "click"],
-  setup(e, { emit: o }) {
-    const t = e, l = z(
-      () => t.inputType === "checkbox" ? t.modelValue.indexOf(t.inputValue) >= 0 : t.modelValue === t.inputValue
-    ), a = z(() => ({
-      btn: !0,
-      active: t.inputType ? l.value : t.active,
-      disabled: t.disabled,
-      "btn-block": t.block,
-      [`btn-${t.type}`]: !!t.type,
-      [`btn-${t.size}`]: !!t.size
-    }));
-    function n(s) {
-      t.disabled && s instanceof Event ? (s.preventDefault(), s.stopPropagation()) : o("click", s);
-    }
-    function i() {
-      if (t.inputType === "checkbox") {
-        const s = t.modelValue.slice();
-        l.value ? s.splice(s.indexOf(t.inputValue), 1) : s.push(t.inputValue), o("update:modelValue", s);
-      } else
-        o("update:modelValue", t.inputValue);
-    }
-    return (s, M) => s.href ? (u(), f("a", {
-      key: 0,
-      href: s.href,
-      target: s.target,
-      role: "button",
-      class: c(a.value),
-      onClick: n
-    }, [
-      r(s.$slots, "default")
-    ], 10, j)) : s.to ? (u(), I(U("RouterLink"), {
-      key: 1,
-      to: s.to,
-      class: c(a.value),
-      event: e.disabled ? "" : "click",
-      replace: s.replace,
-      append: s.append,
-      exact: s.exact,
-      role: "button",
-      onClick: n
-    }, {
-      default: g(() => [
-        r(s.$slots, "default")
-      ]),
-      _: 3
-    }, 8, ["to", "class", "event", "replace", "append", "exact"])) : e.inputType ? (u(), f("label", {
-      key: 2,
-      class: c(a.value),
-      onClick: n
-    }, [
-      d("input", {
-        autocomplete: "off",
-        type: e.inputType,
-        checked: l.value,
-        disabled: e.disabled,
-        onInput: M[0] || (M[0] = x(() => {
-        }, ["stop"])),
-        onChange: i
-      }, null, 40, q),
-      r(s.$slots, "default")
-    ], 2)) : e.justified ? (u(), I(Y, { key: 3 }, {
-      default: g(() => [
-        d("button", {
-          class: c(a.value),
-          type: e.nativeType,
-          disabled: e.disabled,
-          onClick: n
-        }, [
-          r(s.$slots, "default")
-        ], 10, Z)
-      ]),
-      _: 3
-    })) : (u(), f("button", {
-      key: 4,
-      class: c(a.value),
-      type: e.nativeType,
-      disabled: e.disabled,
-      onClick: n
-    }, [
-      r(s.$slots, "default")
-    ], 10, J));
-  }
 }, p = {
   MOUSE_ENTER: "mouseenter",
   MOUSE_LEAVE: "mouseleave",
@@ -223,19 +88,19 @@ const F = function(e, o) {
 function B(e) {
   return window.getComputedStyle(e);
 }
-function X() {
+function W() {
   const e = window.innerWidth || 0, o = window.innerHeight || 0;
   return { width: e, height: o };
 }
 let y = null, S = null;
-function Q(e = !1) {
-  const o = X();
+function Y(e = !1) {
+  const o = W();
   if (y !== null && !e && o.height === S.height && o.width === S.width)
     return y;
   if (document.readyState === "loading")
     return null;
-  const t = document.createElement("div"), l = document.createElement("div");
-  return t.style.width = l.style.width = t.style.height = l.style.height = "100px", t.style.overflow = "scroll", l.style.overflow = "hidden", document.body.appendChild(t), document.body.appendChild(l), y = Math.abs(t.scrollHeight - l.scrollHeight), document.body.removeChild(t), document.body.removeChild(l), S = o, y;
+  const t = document.createElement("div"), n = document.createElement("div");
+  return t.style.width = n.style.width = t.style.height = n.style.height = "100px", t.style.overflow = "scroll", n.style.overflow = "hidden", document.body.appendChild(t), document.body.appendChild(n), y = Math.abs(t.scrollHeight - n.scrollHeight), document.body.removeChild(t), document.body.removeChild(n), S = o, y;
 }
 function w(e, o, t) {
   e == null || e.addEventListener(o, t);
@@ -247,48 +112,189 @@ function k(e) {
   return e && e.nodeType === Node.ELEMENT_NODE;
 }
 function h(e) {
-  k(e) && k(e.parentNode) && e.parentNode.removeChild(e);
-}
-function $(e, o) {
-  k(e) && e.classList.add(o);
+  if (k(e)) {
+    if (typeof e.remove == "function") {
+      e.remove();
+      return;
+    }
+    k(e.parentNode) && e.parentNode.removeChild(e);
+  }
 }
 function O(e, o) {
+  k(e) && e.classList.add(o);
+}
+function $(e, o) {
   k(e) && e.classList.remove(o);
 }
 function N(e) {
-  const o = "scroll", t = e.scrollHeight > e.clientHeight, l = B(e);
-  return t || l.overflow === o || l.overflowY === o;
+  const o = "scroll", t = e.scrollHeight > e.clientHeight, n = B(e);
+  return t || n.overflow === o || n.overflowY === o;
 }
 function T(e) {
-  const o = "modal-open", t = ".navbar-fixed-top, .navbar-fixed-bottom", l = document.body;
+  const o = "modal-open", t = ".navbar-fixed-top, .navbar-fixed-bottom", n = document.body;
   if (e)
-    O(l, o), l.style.paddingRight = null, [...document.querySelectorAll(t)].forEach((a) => {
-      a.style.paddingRight = null;
+    $(n, o), n.style.paddingRight = null, [...document.querySelectorAll(t)].forEach((i) => {
+      i.style.paddingRight = null;
     });
   else {
     if (N(document.documentElement) || N(document.body)) {
-      const n = Q();
-      l.style.paddingRight = `${n}px`, [...document.querySelectorAll(t)].forEach((i) => {
-        i.style.paddingRight = `${n}px`;
+      const l = Y();
+      n.style.paddingRight = `${l}px`, [...document.querySelectorAll(t)].forEach((a) => {
+        a.style.paddingRight = `${l}px`;
       });
     }
-    $(l, o);
+    O(n, o);
   }
 }
-const ee = "modal-backdrop";
+const j = "modal-backdrop";
 function P() {
-  return document.querySelectorAll(`.${ee}`);
+  return document.querySelectorAll(`.${j}`);
 }
 function E() {
   return P().length;
 }
-const te = (e, o) => {
+const q = {
+  // <a> props
+  href: { type: String, default: void 0 },
+  target: { type: String, default: void 0 },
+  // <router-link> props
+  to: { type: null, default: void 0 },
+  replace: { type: Boolean, default: !1 },
+  append: { type: Boolean, default: !1 },
+  exact: { type: Boolean, default: !1 }
+}, Z = {
+  __name: "BtnGroup",
+  props: {
+    size: { type: String, default: void 0 },
+    vertical: { type: Boolean, default: !1 },
+    justified: { type: Boolean, default: !1 }
+  },
+  setup(e) {
+    return (o, t) => (u(), f("div", {
+      class: c({
+        "btn-group": !e.vertical,
+        "btn-group-vertical": e.vertical,
+        "btn-group-justified": e.justified,
+        [`btn-group-${e.size}`]: e.size
+      }),
+      role: "group",
+      "data-toggle": "buttons"
+    }, [
+      r(o.$slots, "default")
+    ], 2));
+  }
+}, J = ["href", "target"], G = ["type", "checked", "disabled"], X = ["type", "disabled"], Q = ["type", "disabled"], ee = {
+  __name: "Btn",
+  props: {
+    ...q,
+    justified: { type: Boolean, default: !1 },
+    type: { type: String, default: "default" },
+    nativeType: { type: String, default: "button" },
+    size: { type: String, default: void 0 },
+    block: { type: Boolean, default: !1 },
+    active: { type: Boolean, default: !1 },
+    disabled: { type: Boolean, default: !1 },
+    // <input> props
+    modelValue: { type: null, default: null },
+    inputValue: { type: null, default: null },
+    inputType: {
+      type: String,
+      validator(e) {
+        return e === "checkbox" || e === "radio";
+      },
+      default: void 0
+    }
+  },
+  emits: ["update:modelValue", "click"],
+  setup(e, { emit: o }) {
+    const t = e, n = z(
+      () => t.inputType === "checkbox" ? t.modelValue.indexOf(t.inputValue) >= 0 : t.modelValue === t.inputValue
+    ), i = z(() => ({
+      btn: !0,
+      active: t.inputType ? n.value : t.active,
+      disabled: t.disabled,
+      "btn-block": t.block,
+      [`btn-${t.type}`]: !!t.type,
+      [`btn-${t.size}`]: !!t.size
+    }));
+    function l(s) {
+      t.disabled && s instanceof Event ? (s.preventDefault(), s.stopPropagation()) : o("click", s);
+    }
+    function a() {
+      if (t.inputType === "checkbox") {
+        const s = t.modelValue.slice();
+        n.value ? s.splice(s.indexOf(t.inputValue), 1) : s.push(t.inputValue), o("update:modelValue", s);
+      } else
+        o("update:modelValue", t.inputValue);
+    }
+    return (s, M) => s.href ? (u(), f("a", {
+      key: 0,
+      href: s.href,
+      target: s.target,
+      role: "button",
+      class: c(i.value),
+      onClick: l
+    }, [
+      r(s.$slots, "default")
+    ], 10, J)) : s.to ? (u(), I(U("RouterLink"), {
+      key: 1,
+      to: s.to,
+      class: c(i.value),
+      event: e.disabled ? "" : "click",
+      replace: s.replace,
+      append: s.append,
+      exact: s.exact,
+      role: "button",
+      onClick: l
+    }, {
+      default: g(() => [
+        r(s.$slots, "default")
+      ]),
+      _: 3
+    }, 8, ["to", "class", "event", "replace", "append", "exact"])) : e.inputType ? (u(), f("label", {
+      key: 2,
+      class: c(i.value),
+      onClick: l
+    }, [
+      d("input", {
+        autocomplete: "off",
+        type: e.inputType,
+        checked: n.value,
+        disabled: e.disabled,
+        onInput: M[0] || (M[0] = x(() => {
+        }, ["stop"])),
+        onChange: a
+      }, null, 40, G),
+      r(s.$slots, "default")
+    ], 2)) : e.justified ? (u(), I(Z, { key: 3 }, {
+      default: g(() => [
+        d("button", {
+          class: c(i.value),
+          type: e.nativeType,
+          disabled: e.disabled,
+          onClick: l
+        }, [
+          r(s.$slots, "default")
+        ], 10, X)
+      ]),
+      _: 3
+    })) : (u(), f("button", {
+      key: 4,
+      class: c(i.value),
+      type: e.nativeType,
+      disabled: e.disabled,
+      onClick: l
+    }, [
+      r(s.$slots, "default")
+    ], 10, Q));
+  }
+}, te = (e, o) => {
   const t = e.__vccOpts || e;
-  for (const [l, a] of o)
-    t[l] = a;
+  for (const [n, i] of o)
+    t[n] = i;
   return t;
 }, b = "in", oe = {
-  components: { Btn: G },
+  components: { Btn: ee },
   props: {
     modelValue: { type: Boolean, default: !1 },
     title: { type: String, default: void 0 },
@@ -324,11 +330,11 @@ const te = (e, o) => {
   },
   watch: {
     modelValue(e) {
-      this.$toggle(e);
+      this.toggle(e);
     }
   },
   mounted() {
-    h(this.$refs.backdrop), w(window, p.MOUSE_DOWN, this.suppressBackgroundClose), w(window, p.KEY_UP, this.onKeyPress), this.modelValue && this.$toggle(!0);
+    h(this.$refs.backdrop), w(window, p.MOUSE_DOWN, this.suppressBackgroundClose), w(window, p.KEY_UP, this.onKeyPress), this.modelValue && this.toggle(!0);
   },
   beforeUnmount() {
     clearTimeout(this.timeoutId), h(this.$refs.backdrop), h(this.$el), E() === 0 && T(!0), m(window, p.MOUSE_DOWN, this.suppressBackgroundClose), m(window, p.MOUSE_UP, this.unsuppressBackgroundClose), m(window, p.KEY_UP, this.onKeyPress);
@@ -340,11 +346,11 @@ const te = (e, o) => {
         const o = this.$refs.backdrop;
         let t = o.style.zIndex;
         t = t && t !== "auto" ? parseInt(t) : 0;
-        const l = P(), a = l.length;
-        for (let n = 0; n < a; n++)
-          if (l[n] !== o) {
-            let i = l[n].style.zIndex;
-            if (i = i && i !== "auto" ? parseInt(i) : 0, i > t)
+        const n = P(), i = n.length;
+        for (let l = 0; l < i; l++)
+          if (n[l] !== o) {
+            let a = n[l].style.zIndex;
+            if (a = a && a !== "auto" ? parseInt(a) : 0, a > t)
               return;
           }
         this.hideModal();
@@ -356,22 +362,22 @@ const te = (e, o) => {
         t && (this.msg = e, this.$emit("update:modelValue", !1));
       });
     },
-    $toggle(e) {
+    toggle(e) {
       const o = this.$el, t = this.$refs.backdrop;
       clearTimeout(this.timeoutId), e ? this.$nextTick(() => {
-        const l = E();
-        if (document.body.appendChild(t), this.appendToBody && document.body.appendChild(o), o.style.display = this.displayStyle, o.scrollTop = 0, t.offsetHeight, T(!1), $(t, b), $(o, b), l > 0) {
-          const a = parseInt(B(o).zIndex) || 1050, n = parseInt(B(t).zIndex) || 1040, i = l * this.zOffset;
-          o.style.zIndex = `${a + i}`, t.style.zIndex = `${n + i}`;
+        const n = E();
+        if (document.body.appendChild(t), this.appendToBody && document.body.appendChild(o), o.style.display = this.displayStyle, o.scrollTop = 0, t.offsetHeight, T(!1), O(t, b), O(o, b), n > 0) {
+          const i = parseInt(B(o).zIndex) || 1050, l = parseInt(B(t).zIndex) || 1040, a = n * this.zOffset;
+          o.style.zIndex = `${i + a}`, t.style.zIndex = `${l + a}`;
         }
         this.timeoutId = setTimeout(() => {
           if (this.autoFocus) {
-            const a = this.$el.querySelector('[data-action="auto-focus"]');
-            a && (a.focus(), a.setAttribute("data-focused", "true"));
+            const i = this.$el.querySelector('[data-action="auto-focus"]');
+            i && (i.focus(), i.setAttribute("data-focused", "true"));
           }
           this.$emit("show"), this.timeoutId = 0;
         }, this.transition);
-      }) : (O(t, b), O(o, b), this.timeoutId = setTimeout(() => {
+      }) : ($(t, b), $(o, b), this.timeoutId = setTimeout(() => {
         o.style.display = "none", h(t), this.appendToBody && h(o), E() === 0 && T(!0), this.$emit("hide", this.msg || "dismiss"), this.msg = "", this.timeoutId = 0, o.style.zIndex = "", t.style.zIndex = "";
       }, this.transition));
     },
@@ -387,30 +393,30 @@ const te = (e, o) => {
       this.backdrop && !this.isCloseSuppressed && this.hideModal();
     }
   }
-}, le = { class: "modal-content" }, ne = {
+}, ne = { class: "modal-content" }, le = {
   key: 0,
   class: "modal-header"
-}, se = /* @__PURE__ */ d("span", { "aria-hidden": "true" }, "×", -1), ae = [
+}, se = /* @__PURE__ */ d("span", { "aria-hidden": "true" }, "×", -1), ie = [
   se
-], ie = { class: "modal-title" }, de = { class: "modal-body" }, ue = {
+], ae = { class: "modal-title" }, de = { class: "modal-body" }, ue = {
   key: 1,
   class: "modal-footer"
 };
-function re(e, o, t, l, a, n) {
-  const i = L("btn");
+function re(e, o, t, n, i, l) {
+  const a = L("btn");
   return u(), f("div", {
     tabindex: "-1",
     role: "dialog",
     class: c(["modal", { fade: t.transition > 0 }]),
-    onClick: o[3] || (o[3] = x((...s) => n.backdropClicked && n.backdropClicked(...s), ["self"]))
+    onClick: o[3] || (o[3] = x((...s) => l.backdropClicked && l.backdropClicked(...s), ["self"]))
   }, [
     d("div", {
       ref: "dialog",
-      class: c(["modal-dialog", n.modalSizeClass]),
+      class: c(["modal-dialog", l.modalSizeClass]),
       role: "document"
     }, [
-      d("div", le, [
-        t.header ? (u(), f("div", ne, [
+      d("div", ne, [
+        t.header ? (u(), f("div", le, [
           r(e.$slots, "header", {}, () => [
             t.dismissBtn ? (u(), f("button", {
               key: 0,
@@ -418,9 +424,9 @@ function re(e, o, t, l, a, n) {
               class: "close",
               "aria-label": "Close",
               style: { position: "relative", "z-index": "1060" },
-              onClick: o[0] || (o[0] = (s) => n.hideModal())
-            }, ae)) : v("", !0),
-            d("h4", ie, [
+              onClick: o[0] || (o[0] = (s) => l.hideModal())
+            }, ie)) : v("", !0),
+            d("h4", ae, [
               r(e.$slots, "title", {}, () => [
                 D(C(t.title), 1)
               ])
@@ -432,22 +438,22 @@ function re(e, o, t, l, a, n) {
         ]),
         t.footer ? (u(), f("div", ue, [
           r(e.$slots, "footer", {}, () => [
-            V(i, {
+            V(a, {
               type: t.cancelType,
-              onClick: o[1] || (o[1] = (s) => n.hideModal("cancel"))
+              onClick: o[1] || (o[1] = (s) => l.hideModal("cancel"))
             }, {
               default: g(() => [
-                d("span", null, C(t.cancelText || n.t("uiv.modal.cancel")), 1)
+                d("span", null, C(t.cancelText || l.t("uiv.modal.cancel")), 1)
               ]),
               _: 1
             }, 8, ["type"]),
-            V(i, {
+            V(a, {
               type: t.okType,
               "data-action": "auto-focus",
-              onClick: o[2] || (o[2] = (s) => n.hideModal("ok"))
+              onClick: o[2] || (o[2] = (s) => l.hideModal("ok"))
             }, {
               default: g(() => [
-                d("span", null, C(t.okText || n.t("uiv.modal.ok")), 1)
+                d("span", null, C(t.okText || l.t("uiv.modal.ok")), 1)
               ]),
               _: 1
             }, 8, ["type"])

@@ -76,7 +76,92 @@ const H = function(e, n) {
     i = t;
   }
   return "";
-}, ye = {
+}, B = {
+  MOUSE_ENTER: "mouseenter",
+  MOUSE_LEAVE: "mouseleave",
+  MOUSE_DOWN: "mousedown",
+  MOUSE_UP: "mouseup",
+  FOCUS: "focus",
+  BLUR: "blur",
+  CLICK: "click",
+  INPUT: "input",
+  KEY_DOWN: "keydown",
+  KEY_UP: "keyup",
+  KEY_PRESS: "keypress",
+  RESIZE: "resize",
+  SCROLL: "scroll",
+  TOUCH_START: "touchstart",
+  TOUCH_END: "touchend"
+};
+function K(e) {
+  return window.getComputedStyle(e);
+}
+function ye() {
+  const e = window.innerWidth || 0, n = window.innerHeight || 0;
+  return { width: e, height: n };
+}
+let x = null, L = null;
+function pe(e = !1) {
+  const n = ye();
+  if (x !== null && !e && n.height === L.height && n.width === L.width)
+    return x;
+  if (document.readyState === "loading")
+    return null;
+  const t = document.createElement("div"), l = document.createElement("div");
+  return t.style.width = l.style.width = t.style.height = l.style.height = "100px", t.style.overflow = "scroll", l.style.overflow = "hidden", document.body.appendChild(t), document.body.appendChild(l), x = Math.abs(t.scrollHeight - l.scrollHeight), document.body.removeChild(t), document.body.removeChild(l), L = n, x;
+}
+function U(e, n, t) {
+  e == null || e.addEventListener(n, t);
+}
+function N(e, n, t) {
+  e == null || e.removeEventListener(n, t);
+}
+function R(e) {
+  return e && e.nodeType === Node.ELEMENT_NODE;
+}
+function E(e) {
+  if (R(e)) {
+    if (typeof e.remove == "function") {
+      e.remove();
+      return;
+    }
+    R(e.parentNode) && e.parentNode.removeChild(e);
+  }
+}
+function W(e, n) {
+  R(e) && e.classList.add(n);
+}
+function Y(e, n) {
+  R(e) && e.classList.remove(n);
+}
+function X(e) {
+  const n = "scroll", t = e.scrollHeight > e.clientHeight, l = K(e);
+  return t || l.overflow === n || l.overflowY === n;
+}
+function A(e) {
+  const n = "modal-open", t = ".navbar-fixed-top, .navbar-fixed-bottom", l = document.body;
+  if (e)
+    Y(l, n), l.style.paddingRight = null, [...document.querySelectorAll(t)].forEach((i) => {
+      i.style.paddingRight = null;
+    });
+  else {
+    if (X(document.documentElement) || X(document.body)) {
+      const a = pe();
+      l.style.paddingRight = `${a}px`, [...document.querySelectorAll(t)].forEach((d) => {
+        d.style.paddingRight = `${a}px`;
+      });
+    }
+    W(l, n);
+  }
+}
+const he = "modal-backdrop";
+function te() {
+  return document.querySelectorAll(`.${he}`);
+}
+function D() {
+  return te().length;
+}
+const me = {
   // <a> props
   href: { type: String, default: void 0 },
   target: { type: String, default: void 0 },
@@ -85,7 +170,7 @@ const H = function(e, n) {
   replace: { type: Boolean, default: !1 },
   append: { type: Boolean, default: !1 },
   exact: { type: Boolean, default: !1 }
-}, pe = {
+}, ke = {
   __name: "BtnGroup",
   props: {
     size: { type: String, default: void 0 },
@@ -106,10 +191,10 @@ const H = function(e, n) {
       m(n.$slots, "default")
     ], 2));
   }
-}, he = ["href", "target"], me = ["type", "checked", "disabled"], ke = ["type", "disabled"], ve = ["type", "disabled"], b = {
+}, ve = ["href", "target"], be = ["type", "checked", "disabled"], ge = ["type", "disabled"], Ce = ["type", "disabled"], b = {
   __name: "Btn",
   props: {
-    ...ye,
+    ...me,
     justified: { type: Boolean, default: !1 },
     type: { type: String, default: "default" },
     nativeType: { type: String, default: "button" },
@@ -159,7 +244,7 @@ const H = function(e, n) {
       onClick: a
     }, [
       m(o.$slots, "default")
-    ], 10, he)) : o.to ? (u(), C(ne("RouterLink"), {
+    ], 10, ve)) : o.to ? (u(), C(ne("RouterLink"), {
       key: 1,
       to: o.to,
       class: h(i.value),
@@ -187,9 +272,9 @@ const H = function(e, n) {
         onInput: T[0] || (T[0] = Q(() => {
         }, ["stop"])),
         onChange: d
-      }, null, 40, me),
+      }, null, 40, be),
       m(o.$slots, "default")
-    ], 2)) : e.justified ? (u(), C(pe, { key: 3 }, {
+    ], 2)) : e.justified ? (u(), C(ke, { key: 3 }, {
       default: r(() => [
         c("button", {
           class: h(i.value),
@@ -198,7 +283,7 @@ const H = function(e, n) {
           onClick: a
         }, [
           m(o.$slots, "default")
-        ], 10, ke)
+        ], 10, ge)
       ]),
       _: 3
     })) : (u(), f("button", {
@@ -209,88 +294,9 @@ const H = function(e, n) {
       onClick: a
     }, [
       m(o.$slots, "default")
-    ], 10, ve));
+    ], 10, Ce));
   }
-}, B = {
-  MOUSE_ENTER: "mouseenter",
-  MOUSE_LEAVE: "mouseleave",
-  MOUSE_DOWN: "mousedown",
-  MOUSE_UP: "mouseup",
-  FOCUS: "focus",
-  BLUR: "blur",
-  CLICK: "click",
-  INPUT: "input",
-  KEY_DOWN: "keydown",
-  KEY_UP: "keyup",
-  KEY_PRESS: "keypress",
-  RESIZE: "resize",
-  SCROLL: "scroll",
-  TOUCH_START: "touchstart",
-  TOUCH_END: "touchend"
-};
-function K(e) {
-  return window.getComputedStyle(e);
-}
-function be() {
-  const e = window.innerWidth || 0, n = window.innerHeight || 0;
-  return { width: e, height: n };
-}
-let x = null, L = null;
-function ge(e = !1) {
-  const n = be();
-  if (x !== null && !e && n.height === L.height && n.width === L.width)
-    return x;
-  if (document.readyState === "loading")
-    return null;
-  const t = document.createElement("div"), l = document.createElement("div");
-  return t.style.width = l.style.width = t.style.height = l.style.height = "100px", t.style.overflow = "scroll", l.style.overflow = "hidden", document.body.appendChild(t), document.body.appendChild(l), x = Math.abs(t.scrollHeight - l.scrollHeight), document.body.removeChild(t), document.body.removeChild(l), L = n, x;
-}
-function U(e, n, t) {
-  e == null || e.addEventListener(n, t);
-}
-function N(e, n, t) {
-  e == null || e.removeEventListener(n, t);
-}
-function R(e) {
-  return e && e.nodeType === Node.ELEMENT_NODE;
-}
-function E(e) {
-  R(e) && R(e.parentNode) && e.parentNode.removeChild(e);
-}
-function W(e, n) {
-  R(e) && e.classList.add(n);
-}
-function Y(e, n) {
-  R(e) && e.classList.remove(n);
-}
-function X(e) {
-  const n = "scroll", t = e.scrollHeight > e.clientHeight, l = K(e);
-  return t || l.overflow === n || l.overflowY === n;
-}
-function A(e) {
-  const n = "modal-open", t = ".navbar-fixed-top, .navbar-fixed-bottom", l = document.body;
-  if (e)
-    Y(l, n), l.style.paddingRight = null, [...document.querySelectorAll(t)].forEach((i) => {
-      i.style.paddingRight = null;
-    });
-  else {
-    if (X(document.documentElement) || X(document.body)) {
-      const a = ge();
-      l.style.paddingRight = `${a}px`, [...document.querySelectorAll(t)].forEach((d) => {
-        d.style.paddingRight = `${a}px`;
-      });
-    }
-    W(l, n);
-  }
-}
-const Ce = "modal-backdrop";
-function te() {
-  return document.querySelectorAll(`.${Ce}`);
-}
-function D() {
-  return te().length;
-}
-const Se = (e, n) => {
+}, Se = (e, n) => {
   const t = e.__vccOpts || e;
   for (const [l, i] of n)
     t[l] = i;
@@ -332,11 +338,11 @@ const Se = (e, n) => {
   },
   watch: {
     modelValue(e) {
-      this.$toggle(e);
+      this.toggle(e);
     }
   },
   mounted() {
-    E(this.$refs.backdrop), U(window, B.MOUSE_DOWN, this.suppressBackgroundClose), U(window, B.KEY_UP, this.onKeyPress), this.modelValue && this.$toggle(!0);
+    E(this.$refs.backdrop), U(window, B.MOUSE_DOWN, this.suppressBackgroundClose), U(window, B.KEY_UP, this.onKeyPress), this.modelValue && this.toggle(!0);
   },
   beforeUnmount() {
     clearTimeout(this.timeoutId), E(this.$refs.backdrop), E(this.$el), D() === 0 && A(!0), N(window, B.MOUSE_DOWN, this.suppressBackgroundClose), N(window, B.MOUSE_UP, this.unsuppressBackgroundClose), N(window, B.KEY_UP, this.onKeyPress);
@@ -364,7 +370,7 @@ const Se = (e, n) => {
         t && (this.msg = e, this.$emit("update:modelValue", !1));
       });
     },
-    $toggle(e) {
+    toggle(e) {
       const n = this.$el, t = this.$refs.backdrop;
       clearTimeout(this.timeoutId), e ? this.$nextTick(() => {
         const l = D();

@@ -236,7 +236,13 @@ function te(e) {
   return e && e.nodeType === Node.ELEMENT_NODE;
 }
 function ae(e) {
-  te(e) && te(e.parentNode) && e.parentNode.removeChild(e);
+  if (te(e)) {
+    if (typeof e.remove == "function") {
+      e.remove();
+      return;
+    }
+    te(e.parentNode) && e.parentNode.removeChild(e);
+  }
 }
 function U(e, t) {
   te(e) && e.classList.add(t);
@@ -288,12 +294,7 @@ function hl(e, t, l, n, o, s, a) {
     p = v.scrollLeft, d = v.scrollTop;
   }
   if (n) {
-    const v = [
-      q.RIGHT,
-      q.BOTTOM,
-      q.LEFT,
-      q.TOP
-    ], b = (S) => {
+    const v = [q.RIGHT, q.BOTTOM, q.LEFT, q.TOP], b = (S) => {
       v.forEach((O) => {
         j(e, O);
       }), U(e, S);
@@ -788,11 +789,11 @@ const ne = function(e, t) {
   },
   watch: {
     modelValue(e) {
-      this.$toggle(e);
+      this.toggle(e);
     }
   },
   mounted() {
-    ae(this.$refs.backdrop), P(window, w.MOUSE_DOWN, this.suppressBackgroundClose), P(window, w.KEY_UP, this.onKeyPress), this.modelValue && this.$toggle(!0);
+    ae(this.$refs.backdrop), P(window, w.MOUSE_DOWN, this.suppressBackgroundClose), P(window, w.KEY_UP, this.onKeyPress), this.modelValue && this.toggle(!0);
   },
   beforeUnmount() {
     clearTimeout(this.timeoutId), ae(this.$refs.backdrop), ae(this.$el), Me() === 0 && ze(!0), M(window, w.MOUSE_DOWN, this.suppressBackgroundClose), M(window, w.MOUSE_UP, this.unsuppressBackgroundClose), M(window, w.KEY_UP, this.onKeyPress);
@@ -820,7 +821,7 @@ const ne = function(e, t) {
         l && (this.msg = e, this.$emit("update:modelValue", !1));
       });
     },
-    $toggle(e) {
+    toggle(e) {
       const t = this.$el, l = this.$refs.backdrop;
       clearTimeout(this.timeoutId), e ? this.$nextTick(() => {
         const n = Me();
@@ -2144,9 +2145,7 @@ const ql = {
       if (e)
         this.triggerEl = Le(e);
       else {
-        const n = (t = this.$refs.tagContainer) == null ? void 0 : t.querySelector(
-          '[data-role="trigger"]'
-        );
+        const n = (t = this.$refs.tagContainer) == null ? void 0 : t.querySelector('[data-role="trigger"]');
         if (n)
           this.triggerEl = n;
         else {
@@ -2166,15 +2165,7 @@ const ql = {
     },
     resetPosition() {
       const e = this.$refs.popup;
-      e && (hl(
-        e,
-        this.triggerEl,
-        this.placement,
-        this.autoPlacement,
-        this.appendTo,
-        this.positionBy,
-        this.viewport
-      ), e.offsetHeight);
+      e && (hl(e, this.triggerEl, this.placement, this.autoPlacement, this.appendTo, this.positionBy, this.viewport), e.offsetHeight);
     },
     hideOnLeave() {
       (this.trigger === Q.HOVER || this.trigger === Q.HOVER_FOCUS && !this.triggerEl.matches(":focus")) && this.$hide();
